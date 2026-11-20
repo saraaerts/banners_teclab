@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Banner AE</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* VOICE: the student's own portal, familiar, calm nudge
+   IDEA: the "En curso" progress card from the alumno portal, in dark mode, advancing step by step
+   PICTURE: module circles turning approved one after another; AE tip follows, or API node lights at the end
+   COLOUR and TYPE: portal green done, grey pending, Teclab blue for the current step; Poppins
+   LAYOUT: two 1300x280 banners stacked; portal panel left, short message right */
+:root{color-scheme:light dark;--page:light-dark(#eef1f6,#06090f);--ink:light-dark(#141c2c,#e6ebf3);--sub:light-dark(#566380,#8d9bb5)}
+:root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box;min-width:0}
+body{margin:0;background:var(--page);color:var(--ink);font:16px/1.5 Poppins,system-ui,sans-serif;overflow-x:clip}
+main{max-width:1340px;margin:0 auto;padding:clamp(20px,4vw,48px) max(3vw,12px)}
+h2{font-size:18px;margin:0 0 10px;font-weight:700}
+section{margin-bottom:36px}
+.stage{width:100%;aspect-ratio:1300/280;position:relative;border-radius:6px;overflow:hidden;box-shadow:0 18px 40px -22px rgba(5,10,25,.55)}
+.bn{position:absolute;top:0;left:0;width:1300px;height:280px;transform-origin:0 0;overflow:hidden;color:#fff;background:radial-gradient(70% 140% at 30% 50%,#13213c 0%,#0a111f 70%)}
+.cap{margin-top:8px;font-size:13px;color:var(--sub)}
+
+.panel{position:absolute;left:60px;top:20px;width:780px;height:240px;border-radius:10px;background:#111a2b;box-shadow:0 0 0 1px #223250,0 24px 50px -20px rgba(0,0,0,.7);overflow:hidden}
+.tabs{display:flex;height:46px;background:#0a101c;padding-left:4px}
+.tabs span{padding:0 22px;display:flex;align-items:center;font-size:15px;font-weight:600;color:#e7edf7}
+.tabs .on{background:#111a2b;border-bottom:3px solid #4c8dff}
+.body{padding:16px 18px 0}
+.card{border:1px solid #26365a;border-radius:8px;background:#15203a;overflow:visible}
+.top{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;border-bottom:1px solid #26365a}
+.name{font-size:17px;font-weight:700;color:#5b9bff;letter-spacing:.2px}
+.yr{font-size:13px;color:#b8c4da;margin-top:2px}
+.prog{display:flex;align-items:center;gap:10px}
+.tri{width:0;height:0;border-left:10px solid #5f6b80;border-top:7px solid transparent;border-bottom:7px solid transparent;transition:border-color .3s}
+.tri.lit{border-left-color:#4c8dff}
+.c{position:relative;width:46px;height:46px;border-radius:50%;display:grid;place-items:center;font-size:18px;font-weight:600;background:#5f6b80;transition:transform .35s cubic-bezier(.3,1.6,.5,1),box-shadow .35s,background .25s}
+.c.api{width:auto;padding:0 16px;border-radius:23px;font-size:16px;font-weight:700;letter-spacing:.5px}
+.c svg{width:24px;height:24px;display:none}
+.c.ok{background:#2e8b3e}
+.c.ok svg{display:block}.c.ok b{display:none}
+.c.cur{transform:scale(1.12);box-shadow:0 0 0 4px #4c8dff,0 0 22px 6px rgba(76,141,255,.35)}
+.c.pop{animation:pop .4s ease-out}
+@keyframes pop{0%{transform:scale(.7)}60%{transform:scale(1.18)}100%{transform:none}}
+.c.cur:after{content:"";position:absolute;inset:-4px;border-radius:inherit;border:2px solid #4c8dff;animation:ring 1.6s ease-out infinite}
+@keyframes ring{0%{opacity:.8;transform:scale(1)}100%{opacity:0;transform:scale(1.7)}}
+.tip{position:absolute;top:62px;white-space:nowrap;background:#2f6bff;color:#fff;font-size:13px;font-weight:700;padding:6px 12px;border-radius:8px;transform:translateX(-50%);transition:left .45s cubic-bezier(.5,0,.3,1),opacity .3s;opacity:0;z-index:2}
+.tip:before{content:"";position:absolute;top:-6px;left:50%;margin-left:-6px;border:6px solid transparent;border-top:0;border-bottom-color:#2f6bff}
+.tip.show{opacity:1}
+.pwrap{position:relative}
+.empty{height:58px;display:flex;align-items:flex-end;gap:14px;padding:0 18px 14px}
+.bar{height:6px;flex:1;border-radius:6px;background:#22314f;overflow:hidden}
+.bar i{display:block;height:100%;width:0;border-radius:6px;background:linear-gradient(90deg,#2e8b3e,#4cc06a);transition:width .5s ease}
+.pct{width:44px;line-height:1;margin-bottom:-3px;font-size:13px;font-weight:600;color:#b8c4da}
+.legend{display:flex;justify-content:flex-end;gap:22px;padding:10px 4px 0;font-size:13px;color:#c9d3e6}
+.legend span{display:flex;align-items:center;gap:7px}
+.legend i{width:18px;height:18px;border-radius:50%;display:grid;place-items:center}
+.legend svg{width:11px;height:11px}
+
+.msg{position:absolute;left:900px;right:50px;top:0;bottom:0;display:flex;flex-direction:column;justify-content:center}
+.msg .k{font-size:17px;font-weight:600;color:#8fb4ff}
+.msg .h{font-size:46px;font-weight:800;line-height:1.02;letter-spacing:-1px;margin-top:6px}
+.msg .s{font-size:15px;color:#9fb0cc;margin-top:12px}
+html,body{margin:0;padding:0;background:transparent;overflow:hidden}body{display:block;min-height:0}.wrap{width:100%}.stage{width:100%;border-radius:0;box-shadow:none}
+</style>
+</head>
+<body>
+<div class="stage"><div class="bn" data-mode="ae" role="img" aria-label="Panel del portal alumno: los módulos se van aprobando uno por uno con su AE. Aprovechá el finde, avanzá con tus AE."></div></div>
+<script>
+{
+  const CHECK='<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>';
+  const COPY={
+    ae:{k:'Aprovechá el finde',h:'Avanzá con<br>tus AE',s:'Módulo a módulo, sumá cada AE aprobada.'},
+    api:{k:'Aprovechá el finde',h:'Avanzá con<br>tus AE y APIs',s:'Sumá cada AE aprobada y avanzá con tus APIs.'}
+  };
+  const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  document.querySelectorAll('.bn').forEach(bn=>{
+    const mode=bn.dataset.mode,c=COPY[mode],N=4;
+    const nodes=[1,2,3,4].map(n=>`<span class="c" data-i="${n-1}">${CHECK}<b>${n}</b></span>`);
+    bn.innerHTML=`
+      <div class="panel">
+        <div class="tabs"><span class="on">En curso</span><span>Regulares</span><span>Aprobadas</span></div>
+        <div class="body">
+          <div class="card">
+            <div class="top">
+              <div><div class="name">TU MATERIA</div><div class="yr">Módulos de cursada</div></div>
+              <div class="pwrap"><div class="prog">${nodes.join('<span class="tri"></span>')}</div><span class="tip"></span></div>
+            </div>
+            <div class="empty"><span class="pct">0%</span><div class="bar"><i></i></div></div>
+          </div>
+          <div class="legend">
+            <span><i style="background:#2e8b3e"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></i>Aprobada</span>
+            <span><i style="background:#d33a3a"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round"><path d="M7 7l10 10M17 7L7 17"/></svg></i>No aprobada</span>
+            <span><i style="background:#5f6b80"></i>Pendiente</span>
+          </div>
+        </div>
+      </div>
+      <div class="msg"><div class="k">${c.k}</div><div class="h">${c.h}</div><div class="s">${c.s}</div></div>`;
+
+    const cs=[...bn.querySelectorAll('.c')],tris=[...bn.querySelectorAll('.tri')];
+    const tip=bn.querySelector('.tip'),bar=bn.querySelector('.bar i'),pct=bn.querySelector('.pct');
+    const total=cs.length;
+    // step k: nodes < k approved, node k current
+    const show=k=>{
+      cs.forEach((el,i)=>{
+        const was=el.classList.contains('ok');
+        el.classList.toggle('ok',i<k);el.classList.toggle('cur',i===k);
+        if(i<k&&!was){el.classList.remove('pop');void el.offsetWidth;el.classList.add('pop')}
+      });
+      tris.forEach((t,i)=>t.classList.toggle('lit',i<k));
+      const done=Math.min(k,N),p=Math.round(done/N*100);
+      bar.style.width=p+'%';pct.textContent=p+'%';
+      if(k<total){
+        const el=cs[k];
+        tip.textContent='AE del módulo '+(k+1);
+        tip.style.left=(el.offsetLeft+el.offsetWidth/2)+'px';tip.classList.add('show');
+      }else tip.classList.remove('show');
+    };
+    if(reduce){show(N-1);return}
+    // timeline
+    const seq=[0,1,2,3,4];
+    const loop=()=>{
+      let d=0;
+      seq.forEach((k,j)=>{setTimeout(()=>show(k),d);d+=(j===0?1000:1500)});
+      // keep last state, then reset
+      setTimeout(()=>show(0),10000);
+    };
+    show(0);setTimeout(()=>{loop();setInterval(loop,10000)},0);
+  });
+
+  const stages=[...document.querySelectorAll('.stage')];
+  const fit=()=>stages.forEach(s=>{s.firstElementChild.style.transform='scale('+(s.clientWidth/1300)+')'});
+  const ro=new ResizeObserver(fit);stages.forEach(s=>ro.observe(s));fit();
+}
+</script>
+</body>
+</html>

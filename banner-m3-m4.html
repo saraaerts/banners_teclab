@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Banner M3 a M4 · general</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* VOICE: the student's own portal, so it feels familiar, not like an ad
+   IDEA: the "En curso" progress card from the alumno portal, in dark mode
+   PICTURE: subject card with module circles; M3 turns approved, M4 lights up as the next step
+   COLOUR and TYPE: portal palette darkened: green done, grey pending, blue ring, blue title; Poppins
+   LAYOUT: 1300x280; portal panel left, short message right */
+:root{color-scheme:light dark;--page:light-dark(#eef1f6,#06090f);--sub:light-dark(#566380,#8d9bb5)}
+:root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box;min-width:0}
+body{margin:0;background:var(--page);font-family:Poppins,system-ui,sans-serif;min-height:100vh;display:grid;place-items:center;padding:24px 12px;overflow-x:clip}
+.wrap{width:min(1300px,100%)}
+.stage{width:100%;aspect-ratio:1300/280;position:relative;border-radius:6px;overflow:hidden;box-shadow:0 18px 40px -22px rgba(5,10,25,.55)}
+.bn{position:absolute;top:0;left:0;width:1300px;height:280px;transform-origin:0 0;overflow:hidden;color:#fff;background:radial-gradient(70% 140% at 30% 50%,#13213c 0%,#0a111f 70%)}
+.cap{margin-top:10px;font-size:13px;color:var(--sub)}
+
+/* portal panel */
+.panel{position:absolute;left:60px;top:20px;width:780px;height:240px;border-radius:10px;background:#111a2b;box-shadow:0 0 0 1px #223250,0 24px 50px -20px rgba(0,0,0,.7);overflow:hidden}
+.tabs{display:flex;height:46px;background:#0a101c;padding-left:4px}
+.tabs span{padding:0 22px;display:flex;align-items:center;font-size:15px;font-weight:600;color:#e7edf7}
+.tabs .on{background:#111a2b;border-bottom:3px solid #4c8dff}
+.body{padding:16px 18px 0}
+.card{border:1px solid #26365a;border-radius:8px;background:#15203a}
+.top{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;border-bottom:1px solid #26365a}
+.name{font-size:17px;font-weight:700;color:#5b9bff;letter-spacing:.2px}
+.yr{font-size:13px;color:#b8c4da;margin-top:2px}
+.prog{display:flex;align-items:center;gap:10px}
+.tri{width:0;height:0;border-left:10px solid #5f6b80;border-top:7px solid transparent;border-bottom:7px solid transparent}
+.c{position:relative;width:46px;height:46px;border-radius:50%;display:grid;place-items:center;font-size:18px;font-weight:600}
+.c svg{width:24px;height:24px}
+.ok{background:#2e8b3e}
+.pend{background:#5f6b80;color:#fff}
+.c3 .a,.c3 .b{position:absolute;inset:0;border-radius:50%;display:grid;place-items:center}
+.c3 .a{background:#5f6b80;animation:outA 8s infinite}
+.c3 .b{background:#2e8b3e;opacity:0;animation:inB 8s infinite}
+@keyframes outA{0%,14%{opacity:1;transform:none}20%,96%{opacity:0;transform:scale(.6)}100%{opacity:1}}
+@keyframes inB{0%,15%{opacity:0;transform:scale(.5)}21%{opacity:1;transform:scale(1.15)}25%,96%{opacity:1;transform:none}100%{opacity:0}}
+.t3{animation:tri 8s infinite}
+@keyframes tri{0%,24%{border-left-color:#5f6b80}30%,96%{border-left-color:#4c8dff}100%{border-left-color:#5f6b80}}
+.c4{background:#5f6b80;box-shadow:0 0 0 3px #2f6bff;animation:c4 8s infinite}
+@keyframes c4{0%,30%{transform:none;box-shadow:0 0 0 3px #2f6bff}36%{transform:scale(1.18);box-shadow:0 0 0 4px #4c8dff,0 0 0 10px rgba(76,141,255,.25)}42%,94%{transform:scale(1.1);box-shadow:0 0 0 4px #4c8dff,0 0 22px 6px rgba(76,141,255,.35)}100%{transform:none}}
+.ring{position:absolute;inset:-4px;border-radius:50%;border:2px solid #4c8dff;opacity:0;animation:ring 1.6s ease-out infinite;animation-delay:3s}
+@keyframes ring{0%{opacity:.8;transform:scale(1)}100%{opacity:0;transform:scale(1.8)}}
+.tip{position:absolute;top:58px;right:-14px;white-space:nowrap;background:#4c8dff;color:#fff;font-size:13px;font-weight:700;padding:6px 12px;border-radius:8px;opacity:0;animation:tip 8s infinite}
+.tip:before{content:"";position:absolute;top:-6px;right:30px;border:6px solid transparent;border-top:0;border-bottom-color:#4c8dff}
+@keyframes tip{0%,36%{opacity:0;transform:translateY(-6px)}42%,94%{opacity:1;transform:none}100%{opacity:0}}
+.empty{height:58px}
+.legend{display:flex;justify-content:flex-end;gap:22px;padding:10px 4px 0;font-size:13px;color:#c9d3e6}
+.legend span{display:flex;align-items:center;gap:7px}
+.legend i{width:18px;height:18px;border-radius:50%;display:grid;place-items:center}
+.legend svg{width:11px;height:11px}
+
+/* message */
+.msg{position:absolute;left:900px;right:50px;top:0;bottom:0;display:flex;flex-direction:column;justify-content:center}
+.msg .k{font-size:17px;font-weight:600;color:#8fb4ff}
+.msg .h{font-size:46px;font-weight:800;line-height:1.02;letter-spacing:-1px;margin-top:6px}
+.msg .s{font-size:15px;color:#9fb0cc;margin-top:12px}
+
+@media (prefers-reduced-motion:reduce){
+  .bn *{animation:none!important}
+  .c3 .a{opacity:0}.c3 .b{opacity:1}.t3{border-left-color:#4c8dff}.tip{opacity:1}
+  .c4{box-shadow:0 0 0 4px #4c8dff}
+}
+html,body{margin:0;padding:0;background:transparent;overflow:hidden}body{display:block;min-height:0}.wrap{width:100%}.stage{width:100%;border-radius:0;box-shadow:none}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="stage" id="stage">
+    <div class="bn" id="bn" role="img" aria-label="Panel del portal alumno en modo oscuro: módulos 1 a 3 aprobados, el módulo 4 marcado como próximo paso. Aprovechá el finde y avanzá con tus módulos.">
+      <div class="panel">
+        <div class="tabs"><span class="on">En curso</span><span>Regulares</span><span>Aprobadas</span></div>
+        <div class="body">
+          <div class="card">
+            <div class="top">
+              <div><div class="name">TU MATERIA</div><div class="yr">Módulos de cursada</div></div>
+              <div class="prog">
+                <span class="c ok"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span>
+                <span class="tri"></span>
+                <span class="c ok"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span>
+                <span class="tri"></span>
+                <span class="c c3"><span class="a">3</span><span class="b"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span></span>
+                <span class="tri t3"></span>
+                <span class="c c4">4<span class="ring"></span><span class="tip">Tu meta del finde</span></span>
+              </div>
+            </div>
+            <div class="empty"></div>
+          </div>
+          <div class="legend">
+            <span><i style="background:#2e8b3e"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></i>Aprobada</span>
+            <span><i style="background:#d33a3a"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round"><path d="M7 7l10 10M17 7L7 17"/></svg></i>No aprobada</span>
+            <span><i style="background:#5f6b80"></i>Pendiente</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="msg">
+        <div class="k">Aprovechá el finde</div>
+        <div class="h">Avanzá con<br>tus módulos</div>
+        <div class="s">Cerrá el 3 y pasá al 4.</div>
+      </div>
+    </div>
+  </div>
+  
+</div>
+<script>
+{
+  const stage=document.getElementById('stage'),bn=document.getElementById('bn');
+  const fit=()=>{bn.style.transform='scale('+(stage.clientWidth/1300)+')'};
+  const ro=new ResizeObserver(fit);ro.observe(stage);fit();
+}
+</script>
+</body>
+</html>
